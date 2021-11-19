@@ -1,6 +1,11 @@
 <?php
 
-include 'dbconnection.php';
+include ('dbconnection.php');
+//if (isset($_POST['submit']){
+  //$id_user=$_GET['id'];
+  $id_user=1;
+//}
+
  ?>
   <!DOCTYPE html>
   <html lang="es">
@@ -11,35 +16,57 @@ include 'dbconnection.php';
     <title>Document</title>
   </head>
   <body>
+    <?php
+    //Obtener todos los datos de la persona
+    $sql="SELECT * FROM agenda WHERE id=:identificador";
+    $stmt=$conn->prepare($sql,array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
+    $id=1;
+    $stmt->execute(array(':identificador'=> $id_user));
+    $user_view = $stmt-> fetchAll();
 
+    //Obtener datos paises
+    $sql="SELECT iso,nombre FROM paises";
+    $stmt=$conn->prepare($sql,array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+
+    $id=1;
+    $stmt->execute();
+    $list_pais = $stmt-> fetchAll();
+     ?>
     <form  method="post">
+
+      <input type="hidden" name="usuarioId" value="<?= $user_view[0]["id"];  ?>">
+
       <label for="nombre">Nombre</label>
-      <input type="text" name="nombre"><br>
+      <input type="text" name="nombre" value="<?= $user_view[0]["nombre"] ?>"><br>
 
       <label for="apellido">Apellido</label>
-      <input type="text" name="apellido"><br>
+      <input type="text" name="apellido" value="<?= $user_view[0]["apellido"] ?>" ><br>
 
       <label for="telefono">Telefono</label>
-      <input type="text" name="telefono"><br>
+      <input type="text" name="telefono"value="<?= $user_view[0]["telefono"] ?>"><br>
 
       <label for="usuario">Usuario</label>
-      <input type="email" name="usuario"><br>
+      <input type="email" name="usuario"value="<?= $user_view[0]["username"] ?>"><br>
 
-      <label for="contrasena">Contraseña</label>
-      <input type="password" name="contrasena" required><br>
+      <label for="contrasena" >Contraseña</label>
+      <input type="password" name="contrasena" value="<?= $user_view[0]["password"] ?>"><br>
 
       <label for="nacionalidad">Nacionalidad</label>
       <select name="nacionalidad">
-        <option value="ES">España</option>
-        <option value="Otro" selected="selected">Extranjero</option>
+        <?php foreach ($list_pais as $pais) {
+
+         ?>
+        <option value="<?= $pais[0]; ?>"> <?= $pais[1]; ?></option>
+
+        <?php  }?>
       </select><br>
 
       <label for="sexo">Sexo</label>
       <input type="radio" name="sexo" value="m">Hombre
       <input type="radio" name="sexo" value="h">Mujer
 
-    <input type="submit" name="submit" value="Enviar">
+    <input type="submit" name="submit" value="Actualizar usuario">
   </form>
   <?php
 
@@ -74,7 +101,7 @@ include 'dbconnection.php';
       ];
       //Insertar en la base de datos
       //$sql="INSERT INTO agenda (nombre,telefono,apellido,username,password,nacionalidad,sexo) VALUES ('$nombre','$telefono','$apellido','$usuario','$hash','$nacionalidad','$sexo')";
-      $sql="INSERT INTO agenda (nombre,telefono,apellido,username,password,nacionalidad,sexo) VALUES (:nombre,:telefono,:apellido,:username,:contrasena,:nacionalidad,:sexo)";
+      $sql="UPDATE agenda SET nombre=:nombre WHERE id=$id_user)";
       $stmt=$conn->prepare($sql,array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
       $stmt->execute($data);
 
