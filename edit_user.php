@@ -101,9 +101,9 @@ include ('dbconnection.php');
       ];
       //Insertar en la base de datos
       //$sql="INSERT INTO agenda (nombre,telefono,apellido,username,password,nacionalidad,sexo) VALUES ('$nombre','$telefono','$apellido','$usuario','$hash','$nacionalidad','$sexo')";
-      $sql="UPDATE agenda SET nombre=:nombre WHERE id=$id_user)";
+      $sql="UPDATE agenda SET nombre=:nombre, telefono=:telefono, apellido=:apellido, username=:username, contrasena=:contrasena,nacionalidad=:nacionalidad, sexo=:sexo WHERE id=$id_user)";
       $stmt=$conn->prepare($sql,array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-      $stmt->execute($data);
+      //$stmt->execute($data); NO EJECUTAR CUANDO EDITA USUARIO
 
 
       //$conn->exec($sql);
