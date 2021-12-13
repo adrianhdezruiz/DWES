@@ -38,7 +38,7 @@ $listaUsuarios = $stmt-> fetchAll(PDO::FETCH_ASSOC);
           }
         }
     ?>
-      <td><a href="?id=<?= $usuarios['id'] ?>"> Editar</a><a href="?id=<?= $usuarios['id'] ?>"> Ver</a><a href="?id=<?= $usuarios['id'] ?>"> Borrar</a></td>;
+      <td><a href="edit_user.php?id=<?= $usuarios['id'] ?>"> Editar</a><a href="vista_usuario.php?id=<?= $usuarios['id'] ?>"> Ver</a><a href="borrar_user.php?id=<?= $usuarios['id'] ?>"> Borrar</a></td>;
 
 
 
@@ -47,6 +47,7 @@ $listaUsuarios = $stmt-> fetchAll(PDO::FETCH_ASSOC);
       echo "</tr>";
     }
      ?>
+
 
 
 

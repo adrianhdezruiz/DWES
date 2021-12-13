@@ -1,32 +1,19 @@
 <?php
-include ('dbconnection.php');
 
-$sql="SELECT password FROM agenda WHERE id=:identificador";
-$stmt=$conn->prepare($sql,array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+include('dbconnection.php');
 
-$id=4;
-$stmt->execute(array(':identificador'=> 4));
-$user_view = $stmt-> fetchAll();
+$micontrasena = '123$-';
 
+$sql = "SELECT password FROM agenda WHERE id = :identificador";
+$stmt = $conn->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
-echo "<br>";
-$stmt->execute(array(':identificador'=> 3));
-$user_view = $stmt-> fetchistaMarcas.comprobarMarca("Ford");All();
+$stmt->execute(array(':identificador' => 33));
+$user_view = $stmt->fetchAll();
 
-$midbHash= $user_view[0]["password"];
-$micontrasena='sal123';
-
-
-
-
-
-/*if (password_verify($micontrasena, $midbHash) {
-  echo "Acceso autorizado";
-}else {
-  echo "Acceso denegado";
-}*/
-
-
-
+if(password_verify($micontrasena, $user_view[0]["password"])) {
+    print "Acceso autorizado";
+} else {
+    print "Acceso denegado";
+}
 
  ?>

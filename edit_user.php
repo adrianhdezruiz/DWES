@@ -3,7 +3,7 @@
 include ('dbconnection.php');
 //if (isset($_POST['submit']){
   //$id_user=$_GET['id'];
-  $id_user=1;
+  $id_user=$_GET['id'];
 //}
 
  ?>
@@ -21,19 +21,23 @@ include ('dbconnection.php');
     $sql="SELECT * FROM agenda WHERE id=:identificador";
     $stmt=$conn->prepare($sql,array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
-    $id=1;
+
     $stmt->execute(array(':identificador'=> $id_user));
-    $user_view = $stmt-> fetchAll();
+    $user_view = $stmt-> fetchAll(PDO::FETCH_ASSOC);
+
+    //----------------------------------------------//
 
     //Obtener datos paises
     $sql="SELECT iso,nombre FROM paises";
     $stmt=$conn->prepare($sql,array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
-    $id=1;
+
     $stmt->execute();
     $list_pais = $stmt-> fetchAll();
+
+
      ?>
-    <form  method="post">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?> " method="post" >
 
       <input type="hidden" name="usuarioId" value="<?= $user_view[0]["id"];  ?>">
 
@@ -45,7 +49,7 @@ include ('dbconnection.php');
 
       <label for="telefono">Telefono</label>
       <input type="text" name="telefono"value="<?= $user_view[0]["telefono"] ?>"><br>
-
+6
       <label for="usuario">Usuario</label>
       <input type="email" name="usuario"value="<?= $user_view[0]["username"] ?>"><br>
 
@@ -97,14 +101,15 @@ include ('dbconnection.php');
         'username'=>$username,
         'contrasena'=>$hash,
         'nacionalidad'=>$nacionalidad,
-        'sexo'=>$sexo,
+        'sexo'=>$sexo
       ];
       //Insertar en la base de datos
       //$sql="INSERT INTO agenda (nombre,telefono,apellido,username,password,nacionalidad,sexo) VALUES ('$nombre','$telefono','$apellido','$usuario','$hash','$nacionalidad','$sexo')";
-      $sql="UPDATE agenda SET nombre=:nombre, telefono=:telefono, apellido=:apellido, username=:username, contrasena=:contrasena,nacionalidad=:nacionalidad, sexo=:sexo WHERE id=$id_user)";
+      $sql="UPDATE agenda SET nombre=:nombre, telefono=:telefono, apellido=:apellido, username=:username, password=:contrasena, nacionalidad=:nacionalidad, sexo=:sexo WHERE id=$id_user";
       $stmt=$conn->prepare($sql,array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-      //$stmt->execute($data); NO EJECUTAR CUANDO EDITA USUARIO
+      $stmt->execute($data);
 
+      //:nombre,:telefono,:apellido,:username,:contrasena,:nacionalidad,:sexo
 
       //$conn->exec($sql);
       $ultimo_id=$conn->lastInsertId();
